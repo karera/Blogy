@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  {% include "blog/head.html"%}
+<body>
+  {% include "blog/header.html"%}
+  <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+  </div>
+
+
+  {% block content%}
+  {% endblock content %}
+
+  {% include 'blog/footer.html'%}
+  {% include 'blog/scripts.html'%}
+</body>
+</html>
