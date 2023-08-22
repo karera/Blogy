@@ -18,14 +18,17 @@
         <div class="col-lg-8">
           {%for obj in rooks%}
           <div class="blog-entry d-flex blog-entry-search-item">
-            <a href="{{obj.get_absolute_url}}" class="img-link me-4">
+            {% if obj in thumbnail %}
+              <a href="{{obj.get_absolute_url}}" class="img-link me-4">
+                
               <img src="{{obj.thumbnail.url}}" alt="Image" class="img-fluid">
-            </a>
+              </a>
+            {% endif %}
             <div>
               <span class="date">{{obj.timestamp}} &bullet; 
                 {% for cat in obj.categories.all %}
                 <a href="#">{{cat}}</a>
-                {% endfor%}
+                {% endfor%} 
               </span>
               <h2><a href="{{obj.get_absolute_url}}">{{obj.title| truncatechars:30}}</a></h2>
               <p>{{obj.content|safe|truncatechars:150 }}</p>
@@ -89,7 +92,9 @@
               <ul>
                 <li>
                   <a href="">
-                    <img src="{{obj.thumbnail.url }}" alt="Image placeholder" class="me-4 rounded">
+                    {% if obj in thumbnail %}
+                      <img src="{{obj.thumbnail.url }}" alt="Image placeholder" class="me-4 rounded">
+                    {% endif %}
                     <div class="text">
                       <h4>{{obj.content|safe|truncatechars:150}}</h4>
                       <div class="post-meta">

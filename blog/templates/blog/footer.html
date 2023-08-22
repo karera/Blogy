@@ -50,7 +50,9 @@
             <ul>
               <li>
                 <a href="">
-                  <img src="{{obj.thumbnail.url}}" alt="Image placeholder" class="me-4 rounded">
+                  {% if obj in thumbnail%}
+                    <img src="{{obj.thumbnail.url}}" alt="Image placeholder" class="me-4 rounded">
+                  {% endif %}
                   <div class="text">
                     <h4>{{obj.title}}</h4>
                     <div class="post-meta">

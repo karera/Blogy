@@ -11,43 +11,5 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='Author',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('profile_picture', models.ImageField(upload_to='')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Category',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Post',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
-                ('slug', models.SlugField(max_length=100, unique=True)),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('content', models.TextField()),
-                ('overview', tinymce.models.HTMLField()),
-                ('thumbnail', models.ImageField(upload_to='')),
-                ('featured', models.BooleanField()),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('status', models.CharField(choices=[('draft', 'Draft'), ('published', 'Published')], default='draft', max_length=10)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='blog.author')),
-                ('categories', models.ManyToManyField(to='blog.category')),
-            ],
-            options={
-                'ordering': ('-timestamp',),
-            },
-        ),
+        
     ]

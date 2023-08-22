@@ -2,7 +2,7 @@ from django.db.models import Count
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.shortcuts import render,get_object_or_404,redirect
 from django.utils.text import slugify
-from .models import Post,Author
+from .models import Post,Author,Comment
 from django.contrib import messages
 from .forms import *
 
@@ -44,6 +44,7 @@ def blogging (request):
    
     context = {
         'rooks' : rooks,
+        'rook' : rook,
         'latest':latest,
         'paginator':paginator,
         'popular_post':popular_post,
@@ -58,11 +59,53 @@ def category (request):
     return render(request, 'blog/category.html')
 
 def single (request, slug):
-    detail = get_object_or_404(Post,slug=slug) 
+    detail = get_object_or_404(Post,slug=slug)
+    comment_form = CommentForm() # <---- called at GET request
+    comments = detail.comments.filter(active =True)
+    new_comment = None
+    if request.method == 'POST':
+        # A comment was posted
+        comment_form = CommentForm(request.POST) # <---- called at POST request
+        if comment_form.is_valid():
+            # Create Comment object but don't save to database yet
+            new_comment = comment_form.save(commit=False)
+            # Assign the current post to the comment
+            new_comment.post = detail 
+            # Save the comment to the database
+            new_comment.save()
+            # redirect to same page and focus on that comment
+            return redirect(detail.get_absolute_url()+'#'+str(new_comment.id))
+        else:
+            comment_form = CommentForm()
     context = {
-        'detail':detail
+        'detail':detail,
+        'comments' : comments,
+        'comment_form' : comment_form,
+        'new_comment' : new_comment
+
     }
-    return render(request,'blog/single.html',context)   
+    return render(request,'blog/single.html',context)
+
+# handling reply, reply view
+def reply_page(request):
+    if request.method == "POST":
+
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            post_id = request.POST.get('post_id')  # from hidden input
+            parent_id = request.POST.get('parent')  # from hidden input
+            post_url = request.POST.get('post_url')  # from hidden input
+
+            reply = form.save(commit=False)
+    
+            reply.post = Post(id=post_id)
+            reply.parent = Comment(id=parent_id)
+            reply.save()
+
+            return redirect(post_url+'#'+str(reply.id))
+
+    return redirect("/")
 
 
 

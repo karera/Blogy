@@ -12,6 +12,7 @@ urlpatterns = [
     path('contact/', views.contact, name='blog-contact'),
     path('category/', views.category, name='blog-category'),
     path("single/<str:slug>/", views.single, name="blog-single"),
+    path('comment/reply/', views.reply_page, name="reply"),
     path('tinymce/',include('tinymce.urls')),
     path('new_post/', views.new_post, name='new_post'),
     path("Update_post/<str:slug>/", views.updatePost, name='update'), 
