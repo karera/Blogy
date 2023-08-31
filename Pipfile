@@ -8,6 +8,11 @@ django = "*"
 pillow = "*"
 django-tinymce = "*"
 django-ckeditor = "*"
+gunicorn = "*"
+whitenoise = "*"
+dj-database-url = "*"
+psycopg2-binary = "*"
+psycopg2 = "*"
 
 [dev-packages]
 

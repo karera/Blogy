@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG','True').lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,10 +79,22 @@ WSGI_APPLICATION = 'church.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway', 
+        'USER': 'postgres',
+        'PASSWORD': 'Dr8vBmxPVj7ptwtM48Wt',
+        'HOST': 'containers-us-west-158.railway.app', 
+        'PORT': '6397',
     }
 }
 
@@ -120,7 +133,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = '/static/'
+
+
 # STATICFILES_DIRS = [os.path.join(BASE_DIR , "static")]
 MEDIA_ROOT= os.path.join(BASE_DIR,'media')
 MEDIA_URL='/media/'
@@ -130,34 +146,8 @@ MEDIA_URL='/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# tinymce
+# import dj_database_url
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
 
-TINYMCE_DEFAULT_CONFIG = {
-
-   'height': 360,
-   'width': 750,
-   'cleanup_on_startup': True,
-   'custom_undo_redo_levels': 20,
-   'selector': 'textarea',
-#    'theme': 'modern',
-   'plugins': '''
-   textcolor save link image media preview codesample contextmenu
-   table code lists fullscreen insertdatetime nonbreaking
-   contextmenu directionality searchreplace wordcount visualblocks
-   visualchars code fullscreen autolink lists charmap print hr
-   anchor pagebreak
-   ''',
-   'toolbar1': '''
-   fullscreen preview bold italic underline | fontselect,
-   fontsizeselect | forecolor backcolor | alignleft alignright |
-   aligncenter alignjustify | indent outdent | bullist numlist table |
-   | link image media | codesample |
-   ''',
-   'toolbar2': '''
-   visualblocks visualchars |
-   charmap hr pagebreak nonbreaking anchor | code |
-   ''',
-   'contextmenu': 'formats | link image',
-   'menubar': True,
-   'statusbar': True,
-}
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
