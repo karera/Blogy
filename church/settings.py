@@ -9,11 +9,16 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
@@ -90,11 +95,11 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway', 
-        'USER': 'postgres',
-        'PASSWORD': 'Dr8vBmxPVj7ptwtM48Wt',
-        'HOST': 'containers-us-west-158.railway.app', 
-        'PORT': '6397',
+        'NAME': os.environ.get('PGDATABASE'), 
+        'USER': os.environ.get('PGUSER'),
+        'PASSWORD': os.environ.get('PGPASSWORD'),
+        'HOST': os.environ.get('PGHOST'), 
+        'PORT': os.environ.get('PGPORT'),
     }
 }
 
